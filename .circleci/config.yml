@@ -52,21 +52,23 @@ jobs:
       - store_artifacts:
           path: ~/artifacts
           destination: executables
-  deploy:
+  deploy-to-code-engine:
     docker:
-      - image: cimg/base:stable
+      - image: ibmcom/ibmcloud-cli:latest
     steps:
       - checkout
       - run:
-          name: Install deployment dependencies
+          name: Install IBM Cloud CLI plugins
           command: |
-            sudo apt-get update
-            sudo apt-get install -y ssh
+            ibmcloud plugin install code-engine
       - run:
-          name: Deploy application
+          name: Authenticate IBM Cloud
+          command: ibmcloud login --apikey $IBM_CLOUD_API_KEY -r YOUR_REGION
+      - run:
+          name: Deploy to Code Engine
           command: |
-            scp ~/artifacts/* user@your-server:/path/to/deploy
-            ssh user@your-server 'bash -s' < ./deploy.sh
+            ibmcloud ce project select --name YOUR_PROJECT_NAME
+            ibmcloud ce app update --name YOUR_APP_NAME --image YOUR_IMAGE_URL
 workflows:
   build-and-test:
     jobs:
@@ -74,6 +76,7 @@ workflows:
       - build-go-executables:
           requires:
             - test-go
-      - deploy:
+      - deploy-to-code-engine:
           requires:
             - build-go-executables
+          context: ibm-cloud-context
