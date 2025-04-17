@@ -63,12 +63,12 @@ jobs:
             ibmcloud plugin install code-engine
       - run:
           name: Authenticate IBM Cloud
-          command: ibmcloud login --apikey $IBM_CLOUD_API_KEY -r YOUR_REGION
+          command: ibmcloud login --apikey $IBM_CLOUD_API_KEY -r us-south
       - run:
           name: Deploy to Code Engine
           command: |
-            ibmcloud ce project select --name YOUR_PROJECT_NAME
-            ibmcloud ce app update --name YOUR_APP_NAME --image YOUR_IMAGE_URL
+            ibmcloud ce project select --name cicdappdallas
+            ibmcloud ce app update --name Application-16 --image YOUR_IMAGE_URL
 workflows:
   build-and-test:
     jobs:
