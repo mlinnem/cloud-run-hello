@@ -1,0 +1,56 @@
+trigger:
+  branches:
+    include:
+      - main  # or your preferred branch
+
+variables:
+  dockerHubImageName: mwlinnem/test-image:latest
+  azureAppName: i5h4ith45iuh4tiuh
+  azureResourceGroup: i5h4ith45iuh4tiuh_group
+
+stages:
+  - stage: BuildAndPush
+    displayName: Build and Push Docker Image
+    jobs:
+      - job: Build
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: Checkout@1
+
+          - task: Docker@2
+            displayName: Build Docker image
+            inputs:
+              command: build
+              Dockerfile: '**/Dockerfile'
+              tags: |
+                $(dockerHubImageName)
+
+          - task: Docker@2
+            displayName: Push Docker image to Docker Hub
+            inputs:
+              command: push
+              tags: |
+                $(dockerHubImageName)
+            env:
+              DOCKER_REGISTRY_SERVICE_CONNECTION: dockerhubServiceConnection
+
+  - stage: Deploy
+    displayName: Deploy to Azure App Service
+    dependsOn: BuildAndPush
+    jobs:
+      - deployment: DeployToAppService
+        environment: 'production'
+        pool:
+          vmImage: 'ubuntu-latest'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebAppContainer@1
+                  displayName: Deploy to Azure Web App
+                  inputs:
+                    azureSubscription: 'azureServiceConnection'
+                    appName: $(azureAppName)
+                    containers: |
+                      $(dockerHubImageName)
