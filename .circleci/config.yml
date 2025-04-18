@@ -75,7 +75,7 @@ jobs:
             ibmcloud plugin install code-engine -f
       - run:
           name: Authenticate IBM Cloud
-          command: ibmcloud login --apikey $IBM_CLOUD_API_KEY -r us-south
+          command: ibmcloud login --apikey $IBM_CLOUD_API_KEY -r us-south -g donotedelete-cicdwork
       - run:
           name: Deploy to Code Engine
           command: |
