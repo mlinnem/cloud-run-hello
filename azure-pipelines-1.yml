@@ -33,7 +33,7 @@ stages:
               tags: |
                 $(dockerHubImageName)
             env:
-              DOCKER_REGISTRY_SERVICE_CONNECTION: dockerhubServiceConnection
+              DOCKER_REGISTRY_SERVICE_CONNECTION: dockerHubConnection
 
   - stage: Deploy
     displayName: Deploy to Azure App Service
