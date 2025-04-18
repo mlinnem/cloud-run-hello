@@ -79,8 +79,8 @@ jobs:
       - run:
           name: Deploy to Code Engine
           command: |
-            ibmcloud ce project select --name cicdappdallas
-            ibmcloud ce app update --name Application-16 --image $DOCKERHUB_USERNAME/test-image:latest
+            ibmcloud ce project select --name cicdtest_take2_proj
+            ibmcloud ce app update --name my-special-app --image $DOCKERHUB_USERNAME/test-image:latest
 workflows:
   build-and-test:
     jobs:
