@@ -72,7 +72,7 @@ jobs:
       - run:
           name: Install IBM Cloud CLI plugins
           command: |
-            ibmcloud plugin install code-engine
+            ibmcloud plugin install code-engine -f
       - run:
           name: Authenticate IBM Cloud
           command: ibmcloud login --apikey $IBM_CLOUD_API_KEY -r us-south
