@@ -37,4 +37,4 @@ stages:
         command: push
         repository: $(dockerHubImageName)
         tags: |
-          $(dockerHubImageName):$(tag)
+          $(tag)
