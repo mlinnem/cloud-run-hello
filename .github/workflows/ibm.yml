@@ -28,5 +28,5 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: false
+          push: true
           tags: your-image-name:latest
