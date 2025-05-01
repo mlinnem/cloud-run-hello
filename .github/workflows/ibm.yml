@@ -1,5 +1,5 @@
 # .github/workflows/docker-build.yml
-name: Build Docker Image
+name: Build and push to DockerHub (#3)
 
 on:
   push:
